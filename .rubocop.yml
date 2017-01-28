@@ -19,5 +19,14 @@ Metrics/MethodLength:
 Rails:
   Enabled: true
 
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Style/AccessModifierIndentation:
+  EnforcedStyle: outdent
+
 Style/Documentation:
   Enabled: false
+
+Style/SpaceInLambdaLiteral:
+  EnforcedStyle: require_space

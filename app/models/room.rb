@@ -33,7 +33,7 @@ class Room < ApplicationRecord
 
   before_save :set_last_online_at, if: -> { status_changed?(to: 'offline') }
 
-  private
+private
 
   def set_last_online_at
     self.last_online_at = Time.current

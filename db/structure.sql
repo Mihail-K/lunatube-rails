@@ -47,6 +47,74 @@ CREATE TABLE ar_internal_metadata (
 
 
 --
+-- Name: playlist_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE playlist_items (
+    id integer NOT NULL,
+    playlist_id integer NOT NULL,
+    creator_id integer NOT NULL,
+    playlist_position integer NOT NULL,
+    media_type character varying NOT NULL,
+    media_url character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: playlist_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE playlist_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: playlist_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE playlist_items_id_seq OWNED BY playlist_items.id;
+
+
+--
+-- Name: playlists; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE playlists (
+    id integer NOT NULL,
+    creator_id integer NOT NULL,
+    name character varying NOT NULL,
+    playlist_items_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: playlists_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE playlists_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: playlists_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE playlists_id_seq OWNED BY playlists.id;
+
+
+--
 -- Name: rooms; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -59,7 +127,7 @@ CREATE TABLE rooms (
     last_online_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    CONSTRAINT check_rooms_on_status CHECK (((status)::text = ANY ((ARRAY['playing'::character varying, 'paused'::character varying, 'offline'::character varying])::text[])))
+    CONSTRAINT check_rooms_on_status CHECK (((status)::text = ANY (ARRAY[('playing'::character varying)::text, ('paused'::character varying)::text, ('offline'::character varying)::text])))
 );
 
 
@@ -125,6 +193,20 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
+-- Name: playlist_items id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlist_items ALTER COLUMN id SET DEFAULT nextval('playlist_items_id_seq'::regclass);
+
+
+--
+-- Name: playlists id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlists ALTER COLUMN id SET DEFAULT nextval('playlists_id_seq'::regclass);
+
+
+--
 -- Name: rooms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -144,6 +226,22 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: playlist_items playlist_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlist_items
+    ADD CONSTRAINT playlist_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: playlists playlists_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlists
+    ADD CONSTRAINT playlists_pkey PRIMARY KEY (id);
 
 
 --
@@ -168,6 +266,27 @@ ALTER TABLE ONLY schema_migrations
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_playlist_items_on_creator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_playlist_items_on_creator_id ON playlist_items USING btree (creator_id);
+
+
+--
+-- Name: index_playlist_items_on_playlist_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_playlist_items_on_playlist_id ON playlist_items USING btree (playlist_id);
+
+
+--
+-- Name: index_playlists_on_creator_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_playlists_on_creator_id ON playlists USING btree (creator_id);
 
 
 --
@@ -214,6 +333,30 @@ ALTER TABLE ONLY rooms
 
 
 --
+-- Name: playlist_items fk_rails_6b8790694d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlist_items
+    ADD CONSTRAINT fk_rails_6b8790694d FOREIGN KEY (playlist_id) REFERENCES playlists(id);
+
+
+--
+-- Name: playlist_items fk_rails_c6af926709; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlist_items
+    ADD CONSTRAINT fk_rails_c6af926709 FOREIGN KEY (creator_id) REFERENCES users(id);
+
+
+--
+-- Name: playlists fk_rails_eb7ef5df60; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlists
+    ADD CONSTRAINT fk_rails_eb7ef5df60 FOREIGN KEY (creator_id) REFERENCES users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -221,6 +364,8 @@ SET search_path TO "$user", public;
 
 INSERT INTO schema_migrations (version) VALUES
 ('20170128191746'),
-('20170128194508');
+('20170128194508'),
+('20170128200145'),
+('20170128200522');
 
 
