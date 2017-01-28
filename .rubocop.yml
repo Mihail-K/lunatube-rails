@@ -1,0 +1,26 @@
+AllCops:
+  DisplayCopNames: true
+
+Metrics/BlockLength:
+  Exclude:
+    - config/**/*.rb
+    - lib/tasks/**/*.rake
+    - db/**/*.rb
+    - spec/**/*.rb
+
+Metrics/LineLength:
+  Max: 120
+
+Rails:
+  Enabled: true
+
+Style/Documentation:
+  Enabled: false
+
+Style/NumericLiterals:
+  Exclude:
+    - db/schema.rb
+
+Style/StringLiterals:
+  Exclude:
+    - db/schema.rb
