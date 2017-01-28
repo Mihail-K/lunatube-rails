@@ -21,5 +21,7 @@ class Playlist < ApplicationRecord
   has_many :playlist_items, inverse_of: :playlist
   accepts_nested_attributes_for :playlist_items, allow_destroy: true
 
+  has_and_belongs_to_many :rooms, inverse_of: :playlists
+
   validates :creator, :name, presence: true
 end

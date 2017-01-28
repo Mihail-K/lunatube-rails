@@ -115,6 +115,38 @@ ALTER SEQUENCE playlists_id_seq OWNED BY playlists.id;
 
 
 --
+-- Name: playlists_rooms; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE playlists_rooms (
+    id integer NOT NULL,
+    playlist_id integer NOT NULL,
+    room_id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: playlists_rooms_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE playlists_rooms_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: playlists_rooms_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE playlists_rooms_id_seq OWNED BY playlists_rooms.id;
+
+
+--
 -- Name: rooms; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -208,6 +240,13 @@ ALTER TABLE ONLY playlists ALTER COLUMN id SET DEFAULT nextval('playlists_id_seq
 
 
 --
+-- Name: playlists_rooms id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlists_rooms ALTER COLUMN id SET DEFAULT nextval('playlists_rooms_id_seq'::regclass);
+
+
+--
 -- Name: rooms id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -243,6 +282,14 @@ ALTER TABLE ONLY playlist_items
 
 ALTER TABLE ONLY playlists
     ADD CONSTRAINT playlists_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: playlists_rooms playlists_rooms_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlists_rooms
+    ADD CONSTRAINT playlists_rooms_pkey PRIMARY KEY (id);
 
 
 --
@@ -288,6 +335,27 @@ CREATE INDEX index_playlist_items_on_playlist_id ON playlist_items USING btree (
 --
 
 CREATE INDEX index_playlists_on_creator_id ON playlists USING btree (creator_id);
+
+
+--
+-- Name: index_playlists_rooms_on_playlist_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_playlists_rooms_on_playlist_id ON playlists_rooms USING btree (playlist_id);
+
+
+--
+-- Name: index_playlists_rooms_on_playlist_id_and_room_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_playlists_rooms_on_playlist_id_and_room_id ON playlists_rooms USING btree (playlist_id, room_id);
+
+
+--
+-- Name: index_playlists_rooms_on_room_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_playlists_rooms_on_room_id ON playlists_rooms USING btree (room_id);
 
 
 --
@@ -341,6 +409,14 @@ ALTER TABLE ONLY rooms
 
 
 --
+-- Name: playlists_rooms fk_rails_2f6ee152f6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlists_rooms
+    ADD CONSTRAINT fk_rails_2f6ee152f6 FOREIGN KEY (playlist_id) REFERENCES playlists(id);
+
+
+--
 -- Name: playlist_items fk_rails_6b8790694d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -365,6 +441,14 @@ ALTER TABLE ONLY playlist_items
 
 
 --
+-- Name: playlists_rooms fk_rails_deb5597ca0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY playlists_rooms
+    ADD CONSTRAINT fk_rails_deb5597ca0 FOREIGN KEY (room_id) REFERENCES rooms(id);
+
+
+--
 -- Name: playlists fk_rails_eb7ef5df60; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -383,6 +467,7 @@ INSERT INTO schema_migrations (version) VALUES
 ('20170128194508'),
 ('20170128200145'),
 ('20170128200522'),
-('20170128212033');
+('20170128212033'),
+('20170128212857');
 
 

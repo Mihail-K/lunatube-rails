@@ -27,6 +27,8 @@ class Room < ApplicationRecord
 
   has_one :playlist, through: :playlist_item
 
+  has_and_belongs_to_many :playlists, inverse_of: :rooms
+
   enum status: {
     playing: 'playing',
     paused:  'paused',
