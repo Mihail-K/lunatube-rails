@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: users
@@ -18,5 +19,34 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject { build(:user) }
+
+  it 'has a valid factory' do
+    should be_valid
+  end
+
+  it 'is invalid without a name' do
+    subject.name = nil
+    should be_invalid
+  end
+
+  it 'is invalid without an email' do
+    subject.email = nil
+    should be_invalid
+  end
+
+  it 'is invalid without a poniverse id' do
+    subject.poniverse_id = nil
+    should be_invalid
+  end
+
+  it 'is invalid when a user with the same exists' do
+    create :user, name: subject.name
+    should be_invalid
+  end
+
+  it 'is invalid when a user with the same email exists' do
+    create :user, email: subject.email
+    should be_invalid
+  end
 end

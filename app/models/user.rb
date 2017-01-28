@@ -19,6 +19,6 @@
 class User < ApplicationRecord
   validates :name, :email, :poniverse_id, presence: true
 
-  validates :name, uniqueness: true, if: :name_changed?
-  validates :email, uniqueness: true, if: :email_changed?
+  validates :name, uniqueness: true, if: -> { new_record? || name_changed? }
+  validates :email, uniqueness: true, if: -> { new_record? || email_changed? }
 end

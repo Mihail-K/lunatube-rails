@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # == Schema Information
 #
 # Table name: users
@@ -17,8 +18,8 @@
 
 FactoryGirl.define do
   factory :user do
-    name "MyString"
-    email "MyString"
+    name { Faker::Internet.user_name }
+    email { Faker::Internet.email }
     poniverse_id 1
   end
 end
