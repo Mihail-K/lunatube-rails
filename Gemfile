@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'active_model_serializers'
+gem 'annotate'
 gem 'awesome_print'
 gem 'kaminari'
 gem 'oj'
