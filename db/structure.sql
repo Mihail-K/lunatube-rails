@@ -127,7 +127,8 @@ CREATE TABLE rooms (
     last_online_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    CONSTRAINT check_rooms_on_status CHECK (((status)::text = ANY (ARRAY[('playing'::character varying)::text, ('paused'::character varying)::text, ('offline'::character varying)::text])))
+    playlist_item_id integer,
+    CONSTRAINT check_rooms_on_status CHECK (((status)::text = ANY ((ARRAY['playing'::character varying, 'paused'::character varying, 'offline'::character varying])::text[])))
 );
 
 
@@ -304,6 +305,13 @@ CREATE INDEX index_rooms_on_owner_id ON rooms USING btree (owner_id);
 
 
 --
+-- Name: index_rooms_on_playlist_item_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_rooms_on_playlist_item_id ON rooms USING btree (playlist_item_id);
+
+
+--
 -- Name: index_rooms_on_status; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -341,6 +349,14 @@ ALTER TABLE ONLY playlist_items
 
 
 --
+-- Name: rooms fk_rails_6ea97677d6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY rooms
+    ADD CONSTRAINT fk_rails_6ea97677d6 FOREIGN KEY (playlist_item_id) REFERENCES playlist_items(id);
+
+
+--
 -- Name: playlist_items fk_rails_c6af926709; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -366,6 +382,7 @@ INSERT INTO schema_migrations (version) VALUES
 ('20170128191746'),
 ('20170128194508'),
 ('20170128200145'),
-('20170128200522');
+('20170128200522'),
+('20170128212033');
 
 
