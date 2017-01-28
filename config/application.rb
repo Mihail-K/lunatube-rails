@@ -15,6 +15,7 @@ Bundler.require(*Rails.groups)
 
 module LunatubeRails
   class Application < Rails::Application
+    config.active_record.schema_format = :sql
     config.api_only = true
     config.generators do |g|
       g.test_framework      :rspec

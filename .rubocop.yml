@@ -12,16 +12,12 @@ Metrics/BlockLength:
 Metrics/LineLength:
   Max: 120
 
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/*.rb
+
 Rails:
   Enabled: true
 
 Style/Documentation:
   Enabled: false
-
-Style/NumericLiterals:
-  Exclude:
-    - db/schema.rb
-
-Style/StringLiterals:
-  Exclude:
-    - db/schema.rb
