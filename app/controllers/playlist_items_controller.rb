@@ -37,6 +37,7 @@ private
   def set_playlist_items
     @playlist_items = policy_scope(PlaylistItem).includes(:creator, :playlist)
     @playlist_items = @playlist_items.where(playlist: params[:playlist_id]) if params[:playlist_id].present?
+    @playlist_items = @playlist_items.order(playlist_position: :asc)
   end
 
   def set_playlist_item
