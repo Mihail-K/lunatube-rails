@@ -30,7 +30,7 @@ protected
       page:  relation.current_page,
       next:  relation.next_page,
       prev:  relation.prev_page,
-      size:  relation.size,
+      size:  relation.length,
       count: relation.total_count,
       pages: relation.total_pages
     }
