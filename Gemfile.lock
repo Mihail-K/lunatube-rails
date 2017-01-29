@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/elabs/pundit.git
+  revision: 8b2d6381037ffe6792d193a2a4442b58a961e9e2
+  branch: master
+  specs:
+    pundit (1.1.0)
+      activesupport (>= 3.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -111,8 +119,6 @@ GEM
     pg (0.19.0)
     powerpack (0.1.1)
     puma (3.7.0)
-    pundit (1.1.0)
-      activesupport (>= 3.0.0)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -228,7 +234,7 @@ DEPENDENCIES
   oj_mimic_json
   pg
   puma
-  pundit
+  pundit!
   rails (~> 5.0.1)
   redis
   resque

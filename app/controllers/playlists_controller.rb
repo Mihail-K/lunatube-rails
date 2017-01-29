@@ -4,43 +4,38 @@ class PlaylistsController < ApplicationController
   before_action :set_playlist, except: %i(index create)
 
   def index
-    @playlists = @playlists.page(params[:page]).per(params[:count])
+    @playlists = authorize(@playlists).page(params[:page]).per(params[:count])
 
     render json: @playlists, meta: meta_for(@playlists)
   end
 
   def show
-    render json: @playlists
+    render json: authorize(@playlist)
   end
 
   def create
-    @playlist = Playlist.create!(playlist_params) do |playlist|
+    @playlist = Playlist.new(permitted_attributes(Playlist)) do |playlist|
       playlist.creator = current_user
     end
+    authorize(@playlist).save!
 
     render json: @playlist, status: :created, location: @playlist
   end
 
   def update
-    @playlist.update!(playlist_params)
+    authorize(@playlist).update!(permitted_attributes(@playlist))
 
     render json: @playlist
   end
 
   def destroy
-    @playlist.destroy!
+    authorize(@playlist).destroy!
   end
 
 private
 
-  def playlist_params
-    params.require(:playlist).permit(:name, playlist_items_attributes: [
-      :id, :playlist_position, :media_type, :media_url, :_destroy
-    ])
-  end
-
   def set_playlists
-    @playlists = Playlist.all
+    @playlists = policy_scope(Playlist).includes(:creator)
   end
 
   def set_playlist
