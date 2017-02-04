@@ -5,13 +5,14 @@
 #
 #  id               :integer          not null, primary key
 #  owner_id         :integer          not null
+#  playlist_item_id :integer
 #  name             :string           not null
 #  status           :string           default("offline"), not null
 #  media_offset     :integer          default("0"), not null
+#  media_started_at :datetime
 #  last_online_at   :datetime
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  playlist_item_id :integer
 #
 # Indexes
 #

@@ -153,13 +153,14 @@ ALTER SEQUENCE playlists_rooms_id_seq OWNED BY playlists_rooms.id;
 CREATE TABLE rooms (
     id integer NOT NULL,
     owner_id integer NOT NULL,
+    playlist_item_id integer,
     name character varying NOT NULL,
     status character varying DEFAULT 'offline'::character varying NOT NULL,
     media_offset integer DEFAULT 0 NOT NULL,
+    media_started_at timestamp without time zone,
     last_online_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    playlist_item_id integer,
     CONSTRAINT check_rooms_on_status CHECK (((status)::text = ANY ((ARRAY['playing'::character varying, 'paused'::character varying, 'offline'::character varying])::text[])))
 );
 
@@ -429,7 +430,7 @@ ALTER TABLE ONLY playlist_items
 --
 
 ALTER TABLE ONLY rooms
-    ADD CONSTRAINT fk_rails_6ea97677d6 FOREIGN KEY (playlist_item_id) REFERENCES playlist_items(id);
+    ADD CONSTRAINT fk_rails_6ea97677d6 FOREIGN KEY (playlist_item_id) REFERENCES playlist_items(id) ON DELETE SET NULL;
 
 
 --
@@ -464,10 +465,9 @@ SET search_path TO "$user", public;
 
 INSERT INTO schema_migrations (version) VALUES
 ('20170128191746'),
-('20170128194508'),
 ('20170128200145'),
 ('20170128200522'),
-('20170128212033'),
+('20170128200548'),
 ('20170128212857');
 
 
