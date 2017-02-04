@@ -23,5 +23,5 @@ class Playlist < ApplicationRecord
 
   has_and_belongs_to_many :rooms, inverse_of: :playlists
 
-  validates :creator, :name, presence: true
+  validates :name, presence: true
 end

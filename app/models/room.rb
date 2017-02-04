@@ -36,7 +36,7 @@ class Room < ApplicationRecord
     offline: 'offline'
   }
 
-  validates :owner, :name, :status, :media_offset, presence: true
+  validates :name, :status, :media_offset, presence: true
   validates :name, uniqueness: true, if: -> { new_record? || name_changed? }
 
   before_save :reset_media_offsets,  if: :playlist_item_id_changed?

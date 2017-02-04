@@ -24,7 +24,7 @@ class PlaylistItem < ApplicationRecord
 
   delegate :playlist_items_count, to: :playlist, allow_nil: true
 
-  validates :playlist, :creator, :playlist_position, :media_type, :media_url, presence: true
+  validates :playlist_position, :media_type, :media_url, presence: true
   validates :playlist_position, numericality: {
     greater_than_or_equal_to: 0, less_than_or_equal_to: :playlist_items_count, if: :playlist_position?
   }
