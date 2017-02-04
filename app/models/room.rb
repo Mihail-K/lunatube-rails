@@ -39,9 +39,14 @@ class Room < ApplicationRecord
   validates :owner, :name, :status, :media_offset, presence: true
   validates :name, uniqueness: true, if: -> { new_record? || name_changed? }
 
+  before_save :set_media_started_at, if: -> { status_changed?(to: 'playing') }
   before_save :set_last_online_at, if: -> { status_changed?(to: 'offline') }
 
 private
+
+  def set_media_started_at
+    self.media_started_at = Time.current
+  end
 
   def set_last_online_at
     self.last_online_at = Time.current

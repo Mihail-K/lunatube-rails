@@ -27,7 +27,6 @@ FactoryGirl.define do
     association :owner, strategy: :build, factory: :user
 
     name { Faker::Book.title }
-    status 'offline'
 
     trait :playing do
       status 'playing'

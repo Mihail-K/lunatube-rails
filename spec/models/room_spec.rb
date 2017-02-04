@@ -50,4 +50,11 @@ RSpec.describe Room, type: :model do
     create :room, name: subject.name
     should be_invalid
   end
+
+  it 'sets the media-started-at timestamp when it changes to playing' do
+    expect do
+      subject.status = 'playing'
+      subject.save
+    end.to change { subject.media_started_at }
+  end
 end
