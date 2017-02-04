@@ -57,4 +57,13 @@ RSpec.describe Room, type: :model do
       subject.save
     end.to change { subject.media_started_at }
   end
+
+  it 'calculates a media offset when the media stops playing' do
+    subject.playing!
+
+    expect do
+      subject.update(media_started_at: 5.minutes.ago)
+      subject.paused!
+    end.to change { subject.media_offset }.from(0).to be_within(1).of(300)
+  end
 end
